@@ -2,12 +2,16 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using NorthWindApiSample.Common.Swagger;
+using NorthWindApiSample.Data.Database.Models;
+using NorthWindApiSample.Data.Repository.Orders.Implementation;
+using NorthWindApiSample.Data.Repository.Orders.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +31,14 @@ namespace NorthWindApiSample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddDbContext<NorthWindContext>(options =>
+            options
+            .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()))
+            //.EnableSensitiveDataLogging()
+            .UseSqlServer(Configuration.GetValue<string>("ConnectionStrings:Default"))
+            );
+
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
@@ -39,6 +51,8 @@ namespace NorthWindApiSample
 
                
             });
+
+            services.AddTransient<IOrdersRepository, OrdersRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +67,7 @@ namespace NorthWindApiSample
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c => {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ClientManagerRestApi v1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "NorthWindSample v1");
 
             });
 
