@@ -43,17 +43,17 @@ namespace NorthWindApiSample.Controllers
             {
                 filter = new OrderStatisticsFilter();
 
-                OrderStatisticsSortingOrder? sort = null;
+              /*  OrderStatisticsSortingOrder? sort = null;
 
                 if (!string.IsNullOrWhiteSpace(request.SortingOrder))
                 {
                     sort = Enum.Parse<OrderStatisticsSortingOrder>(request.SortingOrder.Trim());
                 }
-
+              */
 
                 filter.DateFrom = request.DateFrom;
                 filter.DateTo = request.DateTo;
-                filter.SortingOrder = sort;
+                filter.SortingOrder = request.SortingOrder;
                 filter.UserName = request.UserName;
             }
 

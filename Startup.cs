@@ -15,6 +15,7 @@ using NorthWindApiSample.Data.Repository.Orders.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace NorthWindApiSample
@@ -32,15 +33,6 @@ namespace NorthWindApiSample
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<NorthWindContext>(options =>
-            options
-            .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()))
-            //.EnableSensitiveDataLogging()
-            .UseSqlServer(Configuration.GetValue<string>("ConnectionStrings:Default"))
-            );
-
-            services.AddControllers();
-
             services.AddSwaggerGen(c =>
             {
                 c.EnableAnnotations();
@@ -49,8 +41,27 @@ namespace NorthWindApiSample
 
                 c.SchemaFilter<EnumSchemaFilter>();
 
-               
+
             });
+
+
+            services.AddDbContext<NorthWindContext>(options =>
+            options
+            .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()))
+            //.EnableSensitiveDataLogging()
+            .UseSqlServer(Configuration.GetValue<string>("ConnectionStrings:Default"))
+            );
+
+
+            
+
+            services.AddControllers().AddJsonOptions(options =>
+            {
+
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+
+            
 
             services.AddTransient<IOrdersRepository, OrdersRepository>();
         }
@@ -67,7 +78,7 @@ namespace NorthWindApiSample
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c => {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "NorthWindSample v1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "NorthWindSampleRestApi v1");
 
             });
 

@@ -8,7 +8,10 @@ namespace NorthWindApiSample.Data.Repository.Orders.Filters
 
     public enum OrderStatisticsSortingOrder
     {
-        DateAsc, DateDesc, UserNameAsc, UserNameDesc
+        DateAsc = 0, 
+        DateDesc = 1, 
+        UserNameAsc = 2, 
+        UserNameDesc = 3
     }
 
     public class OrderStatisticsFilter
@@ -19,6 +22,6 @@ namespace NorthWindApiSample.Data.Repository.Orders.Filters
 
         public string? UserName { get; set; }
 
-        public OrderStatisticsSortingOrder? SortingOrder { get; set; };
+        public OrderStatisticsSortingOrder? SortingOrder { get; set; } = null;
     }
 }

@@ -29,6 +29,8 @@ namespace NorthWindApiSample.Data.Repository.Orders.Implementation
 
             query = Filter(query, filter);
 
+            query = OrderBy(query, filter?.SortingOrder);
+
             IQueryable<OrderInfo> orders = query.Select(x => new OrderInfo
             {
                 Id = x.OrderId,
@@ -45,7 +47,13 @@ namespace NorthWindApiSample.Data.Repository.Orders.Implementation
                         Id = d.Product.SupplierId,
                         Name = d.Product.Supplier.CompanyName
                     }
-                })
+                    
+                }),
+                User = new Dto.Customer
+                {
+                    Id = x.Customer.CustomerId,
+                    Name = x.Customer.CompanyName
+                }
                 
             });
 

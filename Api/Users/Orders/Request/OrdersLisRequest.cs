@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NorthWindApiSample.Data.Repository.Orders.Filters;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace NorthWindApiSample.Api.Users.Orders.Request
@@ -16,6 +17,6 @@ namespace NorthWindApiSample.Api.Users.Orders.Request
 
         public string? UserName { get; set; } = null;
 
-        public string? SortingOrder { get; set; }
+        public OrderStatisticsSortingOrder? SortingOrder { get; set; }
     }
 }
